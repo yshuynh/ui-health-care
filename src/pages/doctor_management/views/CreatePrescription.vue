@@ -7,19 +7,28 @@
         </v-card-title>
         <div class="px-5">
           <v-row>
-            <v-col cols="12" md="9" sm="12">
+            <v-col cols="12" md="8" sm="12">
               <v-text-field :label="this.$t('patientPhoneNumber')" v-model="patientPhoneNumber"
                             :error-messages="errorMessagesPhoneNumber"
                             @input="inputPhoneNumber"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="3" sm="12">
+            <v-col cols="12" md="2" sm="12">
               <v-btn
                   @click="checkPatientPhone()"
                   class="mt-5"
                   color="primary"
                   width="100%">
                 {{ $t("check") }}
+              </v-btn>
+            </v-col>
+            <v-col cols="12" md="2" sm="12">
+              <v-btn
+                  @click="qrDialog = true"
+                  class="mt-5 white--text"
+                  color="blue-grey"
+                  width="100%">
+                {{ $t("scanQrCode") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -209,8 +218,17 @@
 
     </v-fade-transition>
 
+    <v-dialog v-model="qrDialog" width="1000">
+      <v-card>
+        <v-card-title>
+          {{ $t("scanQrCode") }}
+        </v-card-title>
+        <my-qr-code-reader v-if="qrDialog" @emitResult="emitedQrResult"/>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="showDetail" width="1200">
-      <prescription-info :prescription-data="selectedPrescription" />
+      <prescription-info :prescription-data="selectedPrescription"/>
     </v-dialog>
 
     <my-snackbar :is-show.sync="showSnackbar" :text="snackBarText" :type="snackBarType"></my-snackbar>
@@ -223,12 +241,14 @@ import {doctorService} from "@/pages/doctor_management/services/doctor.services"
 import ConfirmDialog from "@/components/ConfirmDialog";
 import MySnackbar from "@/components/MySnackbar";
 import PrescriptionInfo from "@/components/PrescriptionInfo";
+import MyQrCodeReader from "@/components/MyQrCodeReader";
 
 export default {
   name: 'CreatePrescription',
-  components: {PrescriptionInfo, MySnackbar, ConfirmDialog},
+  components: {MyQrCodeReader, PrescriptionInfo, MySnackbar, ConfirmDialog},
   data() {
     return {
+      qrDialog: false,
       showDetail: false,
       selectedPrescription: {},
       showSnackbar: false,
@@ -316,6 +336,11 @@ export default {
   methods: {
     init() {
       // this.$refs.form.reset();
+    },
+    emitedQrResult(value) {
+      this.qrDialog = false;
+      this.patientPhoneNumber = value;
+      this.checkPatientPhone();
     },
     showSnackbarFunc(message, type) {
       this.snackBarText = message;
