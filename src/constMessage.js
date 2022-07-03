@@ -127,6 +127,10 @@ const Messages = lang === "en" ? {
     'pharmacistList': 'Danh sách dược sĩ',
     'pharmacistName': 'Dược sĩ',
     'drugstoreManagement': 'Trang quản lý của nhà thuốc',
+    'backgroundImage': 'Ảnh nền',
+    'roleSelect': 'Chọn loại tài khoản',
+    'email': 'Email',
+    'emailMustValid': 'Email không hợp lệ',
 }
 
 Messages.install = function (Vue) {

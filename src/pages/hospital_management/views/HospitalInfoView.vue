@@ -1,5 +1,11 @@
 <template>
   <v-container>
+    <image-picker :base-preview-image="hospital.background" :value.sync="background" @confirmed="onConfirmedUploadAvatar"
+                  class="mb-4"
+                  width-per-cent="100%"
+                  :aspect-ratio="16/9"
+                  :title="this.$t('backgroundImage')"
+    />
     <hospital-info :hospital-info="$store.state.hospital" @confirmedUpdateInfo="confirmedUpdateInfo"/>
 
 <!--    <v-card v-html="getGgMapIframe(hospital.address)">-->
@@ -14,12 +20,14 @@
 import {hospitalService} from "@/pages/hospital_management/services/hospital.services";
 import MySnackbar from "@/components/MySnackbar";
 import HospitalInfo from "@/components/HospitalInfo";
+import ImagePicker from "@/components/ImagePicker";
 // import {hospitalService} from "@/pages/hospital_management/services/hospital.services";
 
 export default {
   name: 'HospitalInfoView',
   data() {
     return {
+      background: null,
       valid: false,
       alert: false,
       alertType: "error",
@@ -55,6 +63,36 @@ export default {
       if (this.valid) {
         this.showConfirmDialog = true;
       }
+    },
+    onConfirmedUploadAvatar(file) {
+      console.log(file);
+      let vm = this;
+      this.isLoading += 1;
+      hospitalService.requestUploadAvatarFile('background', file.name)
+          .then(response => {
+            console.log(response);
+            vm.isLoading += 1;
+            hospitalService.uploadAvatarToAWS('background', response.data.url, response.data.fields, file)
+                .then(res => {
+                  console.log(res);
+                  vm.showSnackbarFunc(vm.$t('saveSuccess'), "success");
+                  this.$router.go();
+                })
+                .catch(error => {
+                  console.log(error);
+                  vm.showSnackbarFunc(vm.$t('didError'), "error");
+                })
+                .finally(() => {
+                  vm.isLoading -= 1
+                });
+          })
+          .catch(error => {
+            console.log(error);
+            vm.showSnackbarFunc(vm.$t('didError'), "error");
+          })
+          .finally(() =>
+              vm.isLoading -= 1
+          );
     },
     showAlert(type, message) {
       this.alert = true;
@@ -101,7 +139,7 @@ export default {
     },
   },
 
-  components: {HospitalInfo, MySnackbar},
+  components: {ImagePicker, HospitalInfo, MySnackbar},
 
   computed: {
     isLoading: {

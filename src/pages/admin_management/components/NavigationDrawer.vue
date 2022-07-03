@@ -13,7 +13,7 @@
     >
       <v-list-item class="px-2">
         <v-list-item-avatar>
-          <v-img src=""></v-img>
+          <v-img src="https://qr-code-eprescription-bucket.s3.ap-southeast-1.amazonaws.com/empty_avatar"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-title>{{$t('admin')}}</v-list-item-title>

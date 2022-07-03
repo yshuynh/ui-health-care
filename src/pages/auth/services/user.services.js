@@ -5,6 +5,8 @@ import Auth from '@/utils/auth'
 export const userService = {
     login,
     getPatientInfo,
+    registerHospital,
+    registerDrugstore,
     // resendEmail,
     // sendResetPasswordEmail
 };
@@ -25,6 +27,22 @@ function getPatientInfo() {
         method: 'GET',
         headers: Auth.getHeaderCookie(),
         url: `${Constants.SERVER}/patients/a/info`
+    });
+}
+
+function registerHospital(data) {
+    return axios({
+        method: 'PUT',
+        url: `${Constants.SERVER}/hospitals/`,
+        data: data
+    });
+}
+
+function registerDrugstore(data) {
+    return axios({
+        method: 'PUT',
+        url: `${Constants.SERVER}/drugstores/`,
+        data: data
     });
 }
 

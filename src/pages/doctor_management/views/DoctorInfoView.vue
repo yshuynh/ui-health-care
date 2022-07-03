@@ -55,15 +55,15 @@ export default {
       console.log(file);
       let vm = this;
       this.isLoading += 1;
-      doctorService.requestUploadAvatarFile(file.name)
+      doctorService.requestUploadAvatarFile('avatar', file.name)
           .then(response => {
             console.log(response);
             vm.isLoading += 1;
-            doctorService.uploadAvatarToAWS(response.data.url, response.data.fields, file)
+            doctorService.uploadAvatarToAWS('avatar', response.data.url, response.data.fields, file)
                 .then(res => {
                   console.log(res);
                   vm.showSnackbarFunc(vm.$t('saveSuccess'), "success");
-                  this.$router.go();
+                  // this.$router.go();
                 })
                 .catch(error => {
                   console.log(error);

@@ -144,10 +144,11 @@ function createMedicalInfo(patientInfoToken, data) {
     });
 }
 
-function requestUploadAvatarFile(fileName) {
+function requestUploadAvatarFile(awsName, fileName) {
     let queryParams = new URLSearchParams();
     const [, extension] = fileName.split('.');
     queryParams.append('ext', extension);
+    queryParams.append('name', awsName);
     return axios({
         method: 'POST',
         url: `${Constants.SERVER}/files/a/avatar?${queryParams.toString()}`,
@@ -155,12 +156,12 @@ function requestUploadAvatarFile(fileName) {
     })
 }
 
-function uploadAvatarToAWS(link, fieldData, file) {
+function uploadAvatarToAWS(awsName, link, fieldData, file) {
     let formData = new FormData();
     Object.keys(fieldData).forEach((key) => {
         formData.append(key, fieldData[key]);
     });
-    let new_file = new File([file], 'avatar');
+    let new_file = new File([file], awsName);
     console.log(new_file);
     formData.append('file', new_file);
     return axios({

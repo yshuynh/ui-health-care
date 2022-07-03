@@ -4,7 +4,7 @@
       <v-card-title class="mb-2">
         <v-row>
           <v-col cols="12" md="9" sm="12" class="py-0">
-            {{ this.$t('avatar') }}
+            {{ title }}
           </v-col>
           <v-col cols="12" md="3" sm="12" class="py-0">
             <v-btn
@@ -23,11 +23,11 @@
             accept="image/png, image/jpeg, image/bmp"
             placeholder="Pick an avatar"
             prepend-icon="mdi-camera"
-            label="Avatar"
+            :label="title"
             v-model="myValue"
         ></v-file-input>
-        <v-card class="mx-auto pa-2" width="250" height="250">
-          <v-img :src="previewImage"/>
+        <v-card class="mx-auto pa-2" :width="widthPerCent">
+          <v-img :src="previewImage" :aspect-ratio="aspectRatio"/>
         </v-card>
       </div>
     </v-card-text>
@@ -46,6 +46,18 @@ export default {
   props: {
     value: File,
     basePreviewImage: String,
+    widthPerCent: {
+      default: '25%',
+      type: String,
+    },
+    aspectRatio: {
+      default: 1,
+      type: Number,
+    },
+    title: {
+      default: 'Avatar',
+      type: String,
+    },
   },
   data: () => ({
     previewImage: "",

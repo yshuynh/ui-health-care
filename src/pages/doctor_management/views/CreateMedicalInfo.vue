@@ -358,6 +358,7 @@ export default {
       if (this.$refs.form) this.$refs.form.reset();
     },
     confirmedDialog(value) {
+      if (!this.checkValidToken()) return;
       if (value !== true) return null;
       this.isLoading += 1;
       doctorService.createMedicalInfo(this.patientInfoToken, this.patientInfo.medical_info)

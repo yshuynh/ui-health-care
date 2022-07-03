@@ -78,35 +78,35 @@
                 </v-col>
                 <v-col cols="12" md="3" sm="12" class="py-0">
                   <v-text-field :label="this.$t('height')" v-model="patientInfo.medical_info.height"
-                                required :rules="rules.required"
+
                                 disabled
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="3" sm="12" class="py-0">
                   <v-text-field :label="this.$t('weight')" v-model="patientInfo.medical_info.weight"
-                                required :rules="rules.required" disabled
+                                disabled
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="3" sm="12" class="py-0">
                   <v-text-field :label="this.$t('bodyTemperature')" v-model="patientInfo.medical_info.body_temperature"
-                                required :rules="rules.required" disabled
+                                disabled
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="3" sm="12" class="py-0">
                   <v-text-field :label="this.$t('bloodGroup')" v-model="patientInfo.medical_info.blood_group"
-                                required :rules="rules.required" disabled
+                                disabled
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6" sm="12" class="py-0">
                   <v-text-field :label="this.$t('systolicBloodPressure')"
                                 v-model="patientInfo.medical_info.systolic_blood_pressure"
-                                required :rules="rules.required" disabled
+                                disabled
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6" sm="12" class="py-0">
                   <v-text-field :label="this.$t('diastolicBloodPressure')"
                                 v-model="patientInfo.medical_info.diastolic_blood_pressure"
-                                required :rules="rules.required" disabled
+                                disabled
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="12" sm="12" class="py-0">
@@ -120,10 +120,10 @@
         </v-card>
 
         <prescription-table
-          :search-result-prescription="patientPrescriptionList"
-          :total-prescription="totalPatientPrescription"
-          @fetchData="fetchPatientPrescriptionList"
-          class="mb-4"
+            :search-result-prescription="patientPrescriptionList"
+            :total-prescription="totalPatientPrescription"
+            @fetchData="fetchPatientPrescriptionList"
+            class="mb-4"
         />
 
         <v-card>
