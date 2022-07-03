@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import CreatePrescription from "@/pages/doctor_management/views/CreatePrescription";
 import DoctorInfoView from "@/pages/doctor_management/views/DoctorInfoView";
-import PrescriptionList from "@/pages/doctor_management/views/PrescriptionList";
+import PrescriptionList from "@/pages/doctor_management/views/PrescriptionListView";
 import ChangePassword from "@/pages/doctor_management/views/ChangePassword";
 import CreateMedicalInfo from "@/pages/doctor_management/views/CreateMedicalInfo";
 import Constants from "@/utils/constants";

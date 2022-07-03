@@ -3,13 +3,13 @@
     <v-card class="mb-4">
       <v-card-text>
         <v-card-title>
-          {{ $t("stepOneInputPatientPhoneNumber") }}
+          {{ $t("stepOneInputPatientInfoToken") }}
         </v-card-title>
         <div class="px-5">
           <v-row>
             <v-col cols="12" md="8" sm="12">
-              <v-text-field :label="this.$t('patientPhoneNumber')" v-model="patientPhoneNumber"
-                            :error-messages="errorMessagesPhoneNumber"
+              <v-text-field :label="this.$t('patientInfoToken')" v-model="patientInfoToken"
+                            :error-messages="errorMessagesPatientInfoToken"
                             @input="inputPhoneNumber"
               ></v-text-field>
             </v-col>
@@ -119,6 +119,13 @@
           </v-card-text>
         </v-card>
 
+        <prescription-table
+          :search-result-prescription="patientPrescriptionList"
+          :total-prescription="totalPatientPrescription"
+          @fetchData="fetchPatientPrescriptionList"
+          class="mb-4"
+        />
+
         <v-card>
           <v-card-text>
             <v-card-title>
@@ -141,10 +148,17 @@
               :headers="headersTable"
               :items="itemsTable"
               hide-default-footer
-              class="elevation-1"
+              class="px-8"
           >
             <template v-slot:top>
-              <v-textarea class="mx-4" :label="$t('diagnostic')" v-model="diagnostic" required :rules="rules.required"
+              <v-textarea :label="$t('diagnostic')" v-model="diagnostic" required :rules="rules.required"
+                          auto-grow
+                          rows="1"
+              ></v-textarea>
+
+              <v-textarea :label="$t('prescriptionNote')" v-model="prescriptionNote" required :rules="rules.required"
+                          auto-grow
+                          rows="1"
               ></v-textarea>
             </template>
             <template v-slot:[`item.amount`]="{ item }">
@@ -158,6 +172,20 @@
               <v-btn icon @click="deleteRow(item)">
                 <v-icon :key="item.delete">mdi-delete</v-icon>
               </v-btn>
+            </template>
+            <template v-slot:[`item.doctor_note`]="{ item }">
+              <v-textarea v-model="item.doctor_note"
+                          :rules="rules.required"
+                          auto-grow
+                          rows="1">
+              </v-textarea>
+            </template>
+            <template v-slot:[`item.pharmacist_note`]="{ item }">
+              <v-textarea v-model="item.pharmacist_note"
+                          :disabled="true"
+                          rows="1"
+                          auto-grow>
+              </v-textarea>
             </template>
             <template v-slot:no-data>
               <h3>{{ $t('noData') }}</h3>
@@ -178,7 +206,7 @@
             <v-data-table
                 :headers="headersTableMedicine"
                 :items="searchResultMedicine"
-                class="elevation-1"
+                class="px-8"
                 :options.sync="options"
                 :server-items-length="totalMedicines"
                 :loading="isLoadingMedicines"
@@ -188,7 +216,6 @@
                 <v-text-field
                     v-model="searchMedicine"
                     :label="$t('searchMedicineName')"
-                    class="mx-4"
                 ></v-text-field>
               </template>
               <template v-slot:[`item.add`]="{ item }">
@@ -242,12 +269,18 @@ import ConfirmDialog from "@/components/ConfirmDialog";
 import MySnackbar from "@/components/MySnackbar";
 import PrescriptionInfo from "@/components/PrescriptionInfo";
 import MyQrCodeReader from "@/components/MyQrCodeReader";
+import jwt_decode from "jwt-decode";
+import PrescriptionTable from "@/components/PrescriptionTable";
 
 export default {
   name: 'CreatePrescription',
-  components: {MyQrCodeReader, PrescriptionInfo, MySnackbar, ConfirmDialog},
+  components: {PrescriptionTable, MyQrCodeReader, PrescriptionInfo, MySnackbar, ConfirmDialog},
   data() {
     return {
+      prescriptionNote: "",
+      patientPrescriptionList: [],
+      totalPatientPrescription: 0,
+      patientId: 0,
       qrDialog: false,
       showDetail: false,
       selectedPrescription: {},
@@ -268,6 +301,7 @@ export default {
         {text: this.$t('concentration'), value: 'concentration'},
         {text: this.$t('usage'), value: 'usage'},
         {text: this.$t('amount'), value: 'amount', width: '10%'},
+        {text: this.$t('doctorNote'), value: 'doctor_note'},
         {text: this.$t('delete'), value: 'delete'},
       ],
       itemsTable: [],
@@ -286,7 +320,7 @@ export default {
       options: {},
       totalMedicines: 0,
       isLoadingMedicines: false,
-      patientPhoneNumber: "",
+      patientInfoToken: "",
       patientInfo: {
         "id": 0,
         "user": {
@@ -301,7 +335,7 @@ export default {
         "dob": "",
         "medical_info": {
           "height": 0,
-          "wieght": 0,
+          "weight": 0,
           "body_temperature": 0,
           "blood_pressure": 0,
           "blood_group": "",
@@ -315,7 +349,7 @@ export default {
         "updated_at": ""
       },
       showConfirmDialog: false,
-      errorMessagesPhoneNumber: ""
+      errorMessagesPatientInfoToken: ""
     }
   },
   watch: {
@@ -337,9 +371,30 @@ export default {
     init() {
       // this.$refs.form.reset();
     },
+    fetchPatientPrescriptionList(data) {
+      let vm = this;
+      this.isLoading += 1;
+      doctorService.getPatientPrescriptionList(this.patientId, this.patientInfoToken, data.page, data.pageSize)
+          .then(response => {
+            if (response.status === 200) {
+              vm.patientPrescriptionList = response.data.results;
+              vm.totalPatientPrescription = response.data.total;
+              console.log("heheh", vm.patientPrescriptionList);
+            } else {
+              vm.errorMessagesPatientInfoToken = this.$t("error");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            vm.errorMessagesPatientInfoToken = this.$t("error");
+          })
+          .finally(() => {
+            vm.isLoading -= 1;
+          });
+    },
     emitedQrResult(value) {
       this.qrDialog = false;
-      this.patientPhoneNumber = value;
+      this.patientInfoToken = value;
       this.checkPatientPhone();
     },
     showSnackbarFunc(message, type) {
@@ -383,21 +438,40 @@ export default {
       }
       return false;
     },
+    checkValidToken() {
+      try {
+        const data = jwt_decode(this.patientInfoToken);
+        console.log(data);
+        const exp = new Date(data.exp * 1000 - 5000); // JS deals with dates in milliseconds since epoch
+        const now = new Date();
+        if (now <= exp) {
+          this.patientId = data.patient_id;
+          return true;
+        } else {
+          this.errorMessagesPatientInfoToken = this.$t('tokenExpired');
+          return false;
+        }
+      } catch (err) {
+        console.log(err);
+        this.errorMessagesPatientInfoToken = err;
+        return false;
+      }
+    },
     checkPatientPhone() {
-      if (this.patientPhoneNumber.length > 0) {
+      if (this.patientInfoToken.length > 0 && this.checkValidToken()) {
         this.isLoading += 1;
-        doctorService.getPatientInfo(this.patientPhoneNumber)
+        doctorService.getPatientInfoByToken(this.patientInfoToken, this.patientId)
             .then(response => {
               if (response.status === 200) {
                 console.log("OKKK", response);
                 this.patientInfo = response.data;
               } else {
-                this.errorMessagesPhoneNumber = this.$t("phoneNumberNotFound");
+                this.errorMessagesPatientInfoToken = this.$t("phoneNumberNotFound");
               }
             })
             .catch(error => {
               console.log(error);
-              this.errorMessagesPhoneNumber = this.$t("phoneNumberNotFound");
+              this.errorMessagesPatientInfoToken = this.$t("phoneNumberNotFound");
             })
             .finally(() => {
               this.isLoading -= 1;
@@ -415,20 +489,23 @@ export default {
       }
     },
     inputPhoneNumber() {
-      this.errorMessagesPhoneNumber = '';
+      this.errorMessagesPatientInfoToken = '';
       if (this.$refs.form) this.$refs.form.reset();
     },
     confirmedDialog(value) {
+      if (!this.checkValidToken()) return;
       const medicine_items = this.itemsTable.map(item => {
         const container = {
           'medicine': item.id,
           'amount': item.amount,
+          'doctor_note': item.doctor_note,
         };
         return container;
       })
       let data = {
-        'patient': this.patientInfo.id,
+        'patient_info_token': this.patientInfoToken,
         'diagnostic': this.diagnostic,
+        'note': this.prescriptionNote,
         'medicine_items': medicine_items,
       }
       let vm = this;

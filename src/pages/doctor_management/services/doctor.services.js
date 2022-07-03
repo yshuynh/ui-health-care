@@ -6,13 +6,16 @@ import axios from "@/services/template.services";
 export const doctorService = {
     // getPatientInfo,
     getMedicineList,
-    getPatientInfo,
+    getPatientInfoByToken,
     getDoctorInfo,
     updateDoctorInfo,
     createPrescription,
     getPrescriptionList,
     changePassword,
     createMedicalInfo,
+    requestUploadAvatarFile,
+    uploadAvatarToAWS,
+    getPatientPrescriptionList,
     // resendEmail,
     // sendResetPasswordEmail
 };
@@ -86,15 +89,30 @@ function getPrescriptionList(page, page_size) {
     });
 }
 
-function getPatientInfo(phone_number) {
+function getPatientPrescriptionList(patientId, patientInfoToken, page, page_size) {
     let params = {
-        phone_number
-    };
+        page,
+        page_size
+    }
+    const data = new URLSearchParams();
+    data.append('patient_info_token', patientInfoToken);
     return axios({
-        method: 'GET',
+        method: 'POST',
         headers: Auth.getHeaderCookie(),
-        url: `${Constants.SERVER}/doctors/a/patients`,
-        params: params
+        url: `${Constants.SERVER}/doctors/a/patients/${patientId}/prescriptions`,
+        params: params,
+        data: data
+    });
+}
+
+function getPatientInfoByToken(patientInfoToken, patientId) {
+    const data = new URLSearchParams();
+    data.append('patient_info_token', patientInfoToken);
+    return axios({
+        method: 'POST',
+        headers: Auth.getHeaderCookie(),
+        url: `${Constants.SERVER}/doctors/a/patients/${patientId}`,
+        data: data
     });
 }
 
@@ -116,8 +134,8 @@ function createPrescription(data) {
     });
 }
 
-function createMedicalInfo(patient_id, data) {
-    data['patient'] = patient_id;
+function createMedicalInfo(patientInfoToken, data) {
+    data['patient_info_token'] = patientInfoToken;
     return axios({
         method: 'PUT',
         headers: Auth.getHeaderCookie(),
@@ -125,6 +143,33 @@ function createMedicalInfo(patient_id, data) {
         data: data
     });
 }
+
+function requestUploadAvatarFile(fileName) {
+    let queryParams = new URLSearchParams();
+    const [, extension] = fileName.split('.');
+    queryParams.append('ext', extension);
+    return axios({
+        method: 'POST',
+        url: `${Constants.SERVER}/files/a/avatar?${queryParams.toString()}`,
+        headers: Auth.getHeaderCookie(),
+    })
+}
+
+function uploadAvatarToAWS(link, fieldData, file) {
+    let formData = new FormData();
+    Object.keys(fieldData).forEach((key) => {
+        formData.append(key, fieldData[key]);
+    });
+    let new_file = new File([file], 'avatar');
+    console.log(new_file);
+    formData.append('file', new_file);
+    return axios({
+        method: 'POST',
+        url: link,
+        data: formData,
+    })
+}
+
 // function resendEmail() {
 //     return axios({
 //         method: 'POST',

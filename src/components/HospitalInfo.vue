@@ -1,0 +1,161 @@
+<template>
+  <div>
+    <v-form
+        ref="form"
+        v-model="valid"
+    >
+      <v-card class="mb-4">
+        <v-card-text>
+          <v-card-title class="mb-2">
+            <v-row>
+              <v-col cols="12" md="9" sm="12" class="py-0">
+                {{ this.$t('personalInfo') }}
+              </v-col>
+              <v-col cols="12" md="3" sm="12" class="py-0">
+                <v-btn
+                    color="success"
+                    width="100%"
+                    @click="checkSubmit">
+                  {{ $t("save") }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-title>
+          <div class="px-5">
+            <v-row>
+              <v-col cols="12" md="8" sm="12" class="py-0">
+                <v-text-field :label="this.$t('hospital')" v-model="hospital.name"
+                              :rules="rules.required"
+                              name="name"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4" sm="12" class="py-0">
+                <v-text-field :label="this.$t('phoneNumber')" v-model="hospital.user.phone_number" disabled
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="12" sm="12" class="py-0">
+                <v-textarea :label="this.$t('address')" v-model="hospital.address"
+                            :rules="rules.required"
+                            name="name"
+                            auto-grow
+                            rows="1"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+          </div>
+<!--          <v-alert-->
+<!--              v-show="alert"-->
+<!--              :type="alertType"-->
+<!--              dense-->
+<!--              text-->
+<!--              class="mt-5 mx-5"-->
+<!--          >-->
+<!--            {{ alertMessage }}-->
+<!--          </v-alert>-->
+        </v-card-text>
+      </v-card>
+    </v-form>
+
+    <v-card v-html="getGgMapIframe(hospital.address)">
+    </v-card>
+    <ConfirmDialog :show-dialog="showConfirmDialog"
+                   @updateShowDialog="updateShowConfirmDialog"
+                   @confirmedDialog="confirmedDialog"
+                   :text="this.$t('confirmSaveInfo') + '?'"/>
+  </div>
+</template>
+
+<script>
+
+import ConfirmDialog from "@/components/ConfirmDialog";
+
+export default {
+  name: 'HospitalInfo',
+  props: {
+    hospitalInfo: Object,
+  },
+  data() {
+    return {
+      valid: false,
+      alert: false,
+      alertType: "error",
+      alertMessage: "",
+      showSnackbar: false,
+      snackBarText: "",
+      snackBarType: "success",
+      hospital: {
+        'user': {
+          'phone_number': "",
+        },
+        'name': "",
+        'gender': false,
+      },
+      rules: {
+        required: [v => !!v || this.$t('thisFieldRequired')],
+        notZero: [v => v > 0 || this.$t('thisFieldRequired')],
+      },
+      showConfirmDialog: false,
+    }
+  },
+  mounted() {
+    // this.hospital = Object.assign({}, this.$store.state.hospital);
+    this.hospital = this.hospitalInfo;
+  },
+  watch: {
+    hospitalInfo: function(value) {
+      this.hospital = value;
+    }
+  },
+  methods: {
+    async checkSubmit() {
+      await this.$refs.form.validate();
+      if (this.valid) {
+        this.showConfirmDialog = true;
+      }
+    },
+    showAlert(type, message) {
+      this.alert = true;
+      this.alertType = type;
+      this.alertMessage = message;
+    },
+    showSnackbarFunc(message, type) {
+      this.snackBarText = message;
+      this.snackBarType = type;
+      this.showSnackbar = true;
+    },
+    updateShowConfirmDialog(value) {
+      this.showConfirmDialog = value;
+    },
+    confirmedDialog(value) {
+      if (value === true) {
+        // let data = {
+        //   'name': this.doctor.name,
+        //   'gender': this.doctor.gender,h
+        //   'department': this.doctor.department,
+        // };
+        this.$emit("confirmedUpdateInfo", this.hospital);
+      }
+    },
+    getGgMapIframe(address) {
+      return `<iframe src="https://maps.google.com/maps?q=${address}&output=embed" width="100%" height="600" style="display:block; border: 0;"></iframe>`
+    },
+  },
+
+  components: {ConfirmDialog},
+
+  computed: {
+    isLoading: {
+      get() {
+        return this.$store.state.isLoading;
+      },
+      set(value) {
+        this.$store.commit("SET_IS_LOADING", value);
+      }
+    },
+  },
+}
+</script>
+
+
+<style lang="scss" scoped>
+</style>

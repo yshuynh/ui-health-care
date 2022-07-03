@@ -138,8 +138,15 @@
                           rows="1"
               ></v-textarea>
             </template>
-            <template v-slot:[`item.note`]="{ item }">
-              <v-textarea v-model="item.note"
+            <template v-slot:[`item.doctor_note`]="{ item }">
+              <v-textarea v-model="item.doctor_note"
+                          :disabled="true"
+                          rows="1"
+                          auto-grow>
+              </v-textarea>
+            </template>
+            <template v-slot:[`item.pharmacist_note`]="{ item }">
+              <v-textarea v-model="item.pharmacist_note"
                           :rules="rules.required"
                           auto-grow
                           rows="1">
@@ -218,7 +225,8 @@ export default {
         {text: this.$t('concentration'), value: 'medicine.concentration'},
         {text: this.$t('usage'), value: 'medicine.usage'},
         {text: this.$t('amount'), value: 'amount', width: '10%', align: 'center'},
-        {text: this.$t('note'), value: 'note', width: '40%'},
+        {text: this.$t('doctorNote'), value: 'doctor_note', width: '40%'},
+        {text: this.$t('pharmacistNote'), value: 'pharmacist_note', width: '40%'},
       ],
       itemsTable: [],
       searchMedicine: "",
@@ -241,7 +249,7 @@ export default {
         "dob": "",
         "medical_info": {
           "height": 0,
-          "wieght": 0,
+          "weight": 0,
           "body_temperature": 0,
           "blood_pressure": 0,
           "blood_group": "",
@@ -329,28 +337,9 @@ export default {
         console.log(data);
         const exp = new Date(data.exp * 1000 - 5000); // JS deals with dates in milliseconds since epoch
         const now = new Date();
-        // let vm = this;
-        // this.isLoading += 1;
         if (now <= exp) {
           this.prescriptionId = data.prescription_id;
           return true;
-
-          // pharmacistService.updatePrescription(data.prescription_id, this.prescriptionToken, data)
-          //     .then(response => {
-          //       if (response.status === 200) {
-          //         console.log(response);
-          //         this.showSnackbarFunc(this.$t('success'), 'success');
-          //       } else {
-          //         this.showSnackbarFunc(this.$t('error'), 'error');
-          //       }
-          //     })
-          //     .catch(error => {
-          //       console.log(error);
-          //       this.showSnackbarFunc(this.$t('error'), 'error');
-          //     })
-          //     .finally(() => {
-          //       vm.isLoading -= 1;
-          //     });
         } else {
           this.errorMessagesPrescriptionToken = this.$t('tokenExpired');
           return false;
@@ -412,7 +401,7 @@ export default {
       const medicine_items = this.itemsTable.map(item => {
         const container = {
           'id': item.id,
-          'note': item.note,
+          'pharmacist_note': item.pharmacist_note,
         };
         return container;
       });
@@ -420,6 +409,7 @@ export default {
         'prescription_token': this.prescriptionToken,
         'medicine_items': medicine_items,
       }
+      console.log("pharamcist update prescription: ", data);
       let vm = this;
       this.isLoading += 1;
       if (value === true) {

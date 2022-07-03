@@ -53,7 +53,10 @@ export default {
   computed: {
     dialog: {
       get () { return this.showDialog },
-      set (value) { this.$emit('updateShowDialog', value) },
+      set (value) {
+        this.$emit('updateShowDialog', value)
+        this.$emit('update:showDialog', value)
+      },
     },
   },
   methods: {

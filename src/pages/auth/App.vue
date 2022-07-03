@@ -59,11 +59,11 @@ export default {
 <style lang="scss" scoped>
 .auth__container {
   //noinspection CssUnknownTarget
-  background-image: url('~@/assets/images/icon_pattern.png');
-  background-repeat: repeat;
-  background-size: 50%;
-  justify-content: center;
-  //background-size: cover;
+  background-image: url('~@/assets/images/bg.jpg');
+  //background-repeat: repeat;
+  //background-size: 50%;
+  //justify-content: center;
+  background-size: cover;
 
   .wrapper {
     min-height: 100%;

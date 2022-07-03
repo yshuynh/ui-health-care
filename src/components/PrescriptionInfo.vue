@@ -37,6 +37,10 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="12" sm="12" class="py-0">
+              <v-text-field :label="this.$t('prescriptionNote')" :value="prescriptionData.note" disabled
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="12" sm="12" class="py-0">
             </v-col>
             <v-col cols="12" md="12" sm="12">
               <v-data-table
@@ -48,10 +52,20 @@
                 <template v-slot:no-data>
                   <h3>There are no current products added on details.</h3>
                 </template>
-<!--                <template v-slot:[`item.note`]="{ item }">-->
-<!--                  <v-textarea v-model="item.note" :disabled="true">-->
-<!--                  </v-textarea>-->
-<!--                </template>-->
+                <template v-slot:[`item.doctor_note`]="{ item }">
+                  <v-textarea  v-model="item.doctor_note" :disabled="true"
+                              :auto-grow="true"
+                              rows="1"
+                  >
+                  </v-textarea>
+                </template>
+                <template v-slot:[`item.pharmacist_note`]="{ item }">
+                  <v-textarea v-model="item.pharmacist_note" :disabled="true"
+                              :auto-grow="true"
+                              rows="1"
+                  >
+                  </v-textarea>
+                </template>
               </v-data-table>
             </v-col>
           </v-row>
@@ -113,7 +127,8 @@ export default {
         {text: this.$t('concentration'), value: 'medicine.concentration'},
         {text: this.$t('usage'), value: 'medicine.usage'},
         {text: this.$t('amount'), value: 'amount', width: '10%'},
-        {text: this.$t('note'), value: 'note'}
+        {text: this.$t('doctorNote'), value: 'doctor_note'},
+        {text: this.$t('pharmacistNote'), value: 'pharmacist_note'}
       ],
     }
   },
@@ -134,3 +149,6 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+</style>

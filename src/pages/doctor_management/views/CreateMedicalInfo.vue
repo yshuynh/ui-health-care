@@ -3,24 +3,33 @@
     <v-card class="mb-4">
       <v-card-text>
         <v-card-title>
-          {{ $t("stepOneInputPatientPhoneNumber") }}
+          {{ $t("stepOneInputPatientInfoToken") }}
         </v-card-title>
         <div class="px-5">
           <v-row>
-            <v-col cols="12" md="9" sm="12">
-              <v-text-field :label="this.$t('patientPhoneNumber')" v-model="patientPhoneNumber"
-                            :error-messages="errorMessagesPhoneNumber"
+            <v-col cols="12" md="8" sm="12">
+              <v-text-field :label="this.$t('patientInfoToken')" v-model="patientInfoToken"
+                            :error-messages="errorMessagesPatientInfoToken"
                             @input="inputPhoneNumber"
                             :rules="rules.required"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="3" sm="12">
+            <v-col cols="12" md="2" sm="12">
               <v-btn
                   @click="checkPatientPhone()"
                   class="mt-5"
                   color="primary"
                   width="100%">
                 {{ $t("check") }}
+              </v-btn>
+            </v-col>
+            <v-col cols="12" md="2" sm="12">
+              <v-btn
+                  @click="qrDialog = true"
+                  class="mt-5 white--text"
+                  color="blue-grey"
+                  width="100%">
+                {{ $t("scanQrCode") }}
               </v-btn>
             </v-col>
             <!--            <v-col cols="12" md="3" sm="12">-->
@@ -132,6 +141,15 @@
       </v-form>
     </v-fade-transition>
 
+    <v-dialog v-model="qrDialog" width="1000">
+      <v-card>
+        <v-card-title>
+          {{ $t("scanQrCode") }}
+        </v-card-title>
+        <my-qr-code-reader v-if="qrDialog" @emitResult="emitedQrResult"/>
+      </v-card>
+    </v-dialog>
+
     <my-snackbar :is-show.sync="showSnackbar" :text="snackBarText" :type="snackBarType"></my-snackbar>
   </v-container>
 </template>
@@ -141,11 +159,15 @@ import constants from "@/utils/constants";
 import {doctorService} from "@/pages/doctor_management/services/doctor.services";
 import ConfirmDialog from "@/components/ConfirmDialog";
 import MySnackbar from "@/components/MySnackbar";
+import jwt_decode from "jwt-decode";
+import MyQrCodeReader from "@/components/MyQrCodeReader";
 
 export default {
   name: 'CreateMedicalInfo',
   data() {
     return {
+      qrDialog: false,
+      patientId: 0,
       showSnackbar: false,
       snackBarText: "",
       snackBarType: "success",
@@ -181,7 +203,7 @@ export default {
       options: {},
       totalMedicines: 0,
       isLoadingMedicines: false,
-      patientPhoneNumber: "",
+      patientInfoToken: "",
       patientInfo: {
         "id": 0,
         "user": {
@@ -196,7 +218,7 @@ export default {
         "dob": "",
         "medical_info": {
           "height": 0,
-          "wieght": 0,
+          "weight": 0,
           "body_temperature": 0,
           "blood_pressure": 0,
           "blood_group": "",
@@ -210,7 +232,7 @@ export default {
         "updated_at": ""
       },
       showConfirmDialog: false,
-      errorMessagesPhoneNumber: ""
+      errorMessagesPatientInfoToken: ""
     }
   },
   watch: {
@@ -231,6 +253,11 @@ export default {
   methods: {
     init() {
       // this.$refs.form.reset();
+    },
+    emitedQrResult(value) {
+      this.qrDialog = false;
+      this.patientInfoToken = value;
+      this.checkPatientPhone();
     },
     showSnackbarFunc(message, type) {
       this.snackBarText = message;
@@ -273,10 +300,29 @@ export default {
       }
       return false;
     },
+    checkValidToken() {
+      try {
+        const data = jwt_decode(this.patientInfoToken);
+        console.log(data);
+        const exp = new Date(data.exp * 1000 - 5000); // JS deals with dates in milliseconds since epoch
+        const now = new Date();
+        if (now <= exp) {
+          this.patientId = data.patient_id;
+          return true;
+        } else {
+          this.errorMessagesPatientInfoToken = this.$t('tokenExpired');
+          return false;
+        }
+      } catch (err) {
+        console.log(err);
+        this.errorMessagesPatientInfoToken = err;
+        return false;
+      }
+    },
     checkPatientPhone() {
-      if (this.patientPhoneNumber.length > 0) {
+      if (this.patientInfoToken.length > 0 && this.checkValidToken()) {
         this.isLoading += 1;
-        doctorService.getPatientInfo(this.patientPhoneNumber)
+        doctorService.getPatientInfoByToken(this.patientInfoToken, this.patientId)
             .then(response => {
               if (response.status === 200) {
                 console.log("OKKK", response);
@@ -284,12 +330,12 @@ export default {
                 // this.showSnackbarFunc(this.$t('success'), 'success');
               } else {
                 // this.showSnackbarFunc(this.$t('didError'), 'error');
-                this.errorMessagesPhoneNumber = this.$t("phoneNumberNotFound");
+                this.errorMessagesPatientInfoToken = this.$t("phoneNumberNotFound");
               }
             })
             .catch(error => {
               console.log(error);
-              this.errorMessagesPhoneNumber = this.$t("phoneNumberNotFound");
+              this.errorMessagesPatientInfoToken = this.$t("phoneNumberNotFound");
               // this.showSnackbarFunc(this.$t('didError'), 'error');
             })
             .finally(() => {
@@ -308,13 +354,13 @@ export default {
       }
     },
     inputPhoneNumber() {
-      this.errorMessagesPhoneNumber = '';
+      this.errorMessagesPatientInfoToken = '';
       if (this.$refs.form) this.$refs.form.reset();
     },
     confirmedDialog(value) {
       if (value !== true) return null;
       this.isLoading += 1;
-      doctorService.createMedicalInfo(this.patientInfo.id, this.patientInfo.medical_info)
+      doctorService.createMedicalInfo(this.patientInfoToken, this.patientInfo.medical_info)
           .then(response => {
             if (response.status === 200) {
               console.log("success");
@@ -332,7 +378,7 @@ export default {
           });
     }
   },
-  components: {MySnackbar, ConfirmDialog},
+  components: {MyQrCodeReader, MySnackbar, ConfirmDialog},
   computed: {
     getRouterLinkForgotPassword: function () {
       return constants.ROUTER_FORGOT_PASSWORD;

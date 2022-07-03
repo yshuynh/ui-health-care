@@ -196,7 +196,7 @@ export default {
         "dob": "",
         "medical_info": {
           "height": 0,
-          "wieght": 0,
+          "weight": 0,
           "body_temperature": 0,
           "blood_pressure": 0,
           "blood_group": "",
