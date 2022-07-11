@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       items: [
-        {title: this.$t('personalInfo'), icon: 'mdi-account', to: 'personal_info'},
+        // {title: this.$t('personalInfo'), icon: 'mdi-account', to: 'personal_info'},
         {title: this.$t('changePassword'), icon: 'mdi-key-change', to:'change_password'},
         // {title: 'My Account', icon: 'mdi-home-city', to: 'about'},
         // {title: 'Users', icon: 'mdi-account-group-outline', to:'unknown'},

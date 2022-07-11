@@ -1,10 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import CreatePrescription from "@/pages/admin_management/views/CreatePrescription";
 import AdminInfoView from "@/pages/admin_management/views/AdminInfoView";
-import PrescriptionList from "@/pages/admin_management/views/PrescriptionList";
 import ChangePassword from "@/pages/admin_management/views/ChangePassword";
-import CreateMedicalInfo from "@/pages/admin_management/views/CreateMedicalInfo";
 import Constants from "@/utils/constants";
 import Auth from "@/utils/auth";
 import HospitalList from "@/pages/admin_management/views/HospitalList";
@@ -15,12 +12,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/personal_info'
-  },
-  {
-    path: '/create_prescription',
-    name: 'create_prescription',
-    component: CreatePrescription
+    redirect: '/change_password'
   },
   {
     path: '/personal_info',
@@ -28,19 +20,9 @@ const routes = [
     component: AdminInfoView
   },
   {
-    path: '/prescription_list',
-    name: 'prescription_list',
-    component: PrescriptionList
-  },
-  {
     path: '/change_password',
     name: 'change_password',
     component: ChangePassword
-  },
-  {
-    path: '/create_medical_info',
-    name: 'create_medical_info',
-    component: CreateMedicalInfo
   },
   {
     path: '/hospital_list',

@@ -4,7 +4,6 @@ import UpdatePrescription from "@/pages/pharmacist_management/views/UpdatePrescr
 import PharmacistInfoView from "@/pages/pharmacist_management/views/PharmacistInfoView";
 import PrescriptionList from "@/pages/pharmacist_management/views/PrescriptionList";
 import ChangePassword from "@/pages/pharmacist_management/views/ChangePassword";
-import CreateMedicalInfo from "@/pages/pharmacist_management/views/CreateMedicalInfo";
 import Constants from "@/utils/constants";
 import Auth from "@/utils/auth";
 
@@ -34,11 +33,6 @@ const routes = [
     path: '/change_password',
     name: 'change_password',
     component: ChangePassword
-  },
-  {
-    path: '/create_medical_info',
-    name: 'create_medical_info',
-    component: CreateMedicalInfo
   },
   {
     path: '/log_out',

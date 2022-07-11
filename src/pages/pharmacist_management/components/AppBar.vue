@@ -54,15 +54,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.auth__container {
-  //noinspection CssUnknownTarget
-  background-image: url('~@/assets/images/login_background.jpg');
-  justify-content: center;
-  background-size: cover;
-
-  .wrapper {
-    min-height: 100%;
-    position: relative;
-  }
-}
 </style>
