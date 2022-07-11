@@ -131,6 +131,12 @@ const Messages = lang === "en" ? {
     'roleSelect': 'Chọn loại tài khoản',
     'email': 'Email',
     'emailMustValid': 'Email không hợp lệ',
+    'selectMedicalInfo': 'Chọn thông tin y tế',
+    'login': 'Đăng nhập',
+    'hadAccountLogin': 'Đã có tài khoản? Đăng nhập',
+    'notHaveAccountRegister': 'Chưa có tài khoản? Đăng ký',
+    'download': 'Tải xuống',
+
 }
 
 Messages.install = function (Vue) {

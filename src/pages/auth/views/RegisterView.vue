@@ -67,6 +67,7 @@
               >
               </v-text-field>
             </v-col>
+
             <v-col cols="12">
               <v-btn
                   @click="confirmPassword"
@@ -80,15 +81,13 @@
           </v-row>
 
         </v-form>
-        <v-alert
-            v-show="alert"
-            :type="alertType"
-            dense
-            text
-            class="mt-5 mx-5"
+
+        <router-link class="d-block grey--text mt-1 text-center mx-auto"
+                     :to="getRouterLinkLogin"
         >
-          {{ alertMessage }}
-        </v-alert>
+          {{ this.$t('hadAccountLogin') }}
+        </router-link>
+
       </v-card-text>
     </v-card>
     <my-snackbar :is-show.sync="showSnackbar" :text="snackBarText" :type="snackBarType"></my-snackbar>
@@ -103,7 +102,11 @@ import MySnackbar from "@/components/MySnackbar";
 export default {
   name: "RegisterView",
   components: {MySnackbar},
-  computed: {},
+  computed: {
+    getRouterLinkLogin: function () {
+      return 'login'
+    }
+  },
   mounted() {
     this.$refs.form.reset();
   },

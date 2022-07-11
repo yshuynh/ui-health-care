@@ -1,5 +1,5 @@
 <template>
-  <v-container class="create-prescription__container">
+  <v-container fluid class="create-prescription__container">
     <v-card class="mb-4">
       <v-card-text>
         <v-card-title>

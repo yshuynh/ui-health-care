@@ -1,5 +1,5 @@
 <template>
-  <v-container class="create-prescription__container">
+  <v-container fluid class="create-prescription__container">
     <v-card class="mb-4">
       <v-card-text>
         <v-card-title>
@@ -126,6 +126,11 @@
             class="mb-4"
         />
 
+        <medical-info-selector
+            :medical-info-list="medicalInfoList"
+            :selected-medical-info.sync="selectedMedicalInfo"
+            class="mb-4"/>
+
         <v-card>
           <v-card-text>
             <v-card-title>
@@ -174,11 +179,40 @@
               </v-btn>
             </template>
             <template v-slot:[`item.doctor_note`]="{ item }">
-              <v-textarea v-model="item.doctor_note"
-                          :rules="rules.required"
-                          auto-grow
-                          rows="1">
-              </v-textarea>
+              <v-row class="my-2" :key="item.id">
+                <v-col cols="12" md="6" sm="12" class="py-0">
+                  <v-textarea v-model="item.doctorNote.morning"
+                              :rules="rules.required"
+                              auto-grow
+                              label="Sáng"
+                              rows="1">
+                  </v-textarea>
+                </v-col>
+                <v-col cols="12" md="6" sm="12" class="py-0">
+                  <v-textarea v-model="item.doctorNote.noon"
+                              :rules="rules.required"
+                              auto-grow
+                              label="Trưa"
+                              rows="1">
+                  </v-textarea>
+                </v-col>
+                <v-col cols="12" md="6" sm="12" class="py-0">
+                  <v-textarea v-model="item.doctorNote.afternoon"
+                              :rules="rules.required"
+                              auto-grow
+                              label="Chiều"
+                              rows="1">
+                  </v-textarea>
+                </v-col>
+                <v-col cols="12" md="6" sm="12" class="py-0">
+                  <v-textarea v-model="item.doctorNote.night"
+                              :rules="rules.required"
+                              auto-grow
+                              label="Tối"
+                              rows="1">
+                  </v-textarea>
+                </v-col>
+              </v-row>
             </template>
             <template v-slot:[`item.pharmacist_note`]="{ item }">
               <v-textarea v-model="item.pharmacist_note"
@@ -271,12 +305,15 @@ import PrescriptionInfo from "@/components/PrescriptionInfo";
 import MyQrCodeReader from "@/components/MyQrCodeReader";
 import jwt_decode from "jwt-decode";
 import PrescriptionTable from "@/components/PrescriptionTable";
+import MedicalInfoSelector from "@/components/MedicalInfoSelector";
 
 export default {
   name: 'CreatePrescription',
-  components: {PrescriptionTable, MyQrCodeReader, PrescriptionInfo, MySnackbar, ConfirmDialog},
+  components: {MedicalInfoSelector, PrescriptionTable, MyQrCodeReader, PrescriptionInfo, MySnackbar, ConfirmDialog},
   data() {
     return {
+      selectedMedicalInfo: null,
+      medicalInfoList: [],
       prescriptionNote: "",
       patientPrescriptionList: [],
       totalPatientPrescription: 0,
@@ -301,7 +338,7 @@ export default {
         {text: this.$t('concentration'), value: 'concentration'},
         {text: this.$t('usage'), value: 'usage'},
         {text: this.$t('amount'), value: 'amount', width: '10%'},
-        {text: this.$t('doctorNote'), value: 'doctor_note'},
+        {text: this.$t('doctorNote'), value: 'doctor_note', width: '40%'},
         {text: this.$t('delete'), value: 'delete'},
       ],
       itemsTable: [],
@@ -379,7 +416,6 @@ export default {
             if (response.status === 200) {
               vm.patientPrescriptionList = response.data.results;
               vm.totalPatientPrescription = response.data.total;
-              console.log("heheh", vm.patientPrescriptionList);
             } else {
               vm.errorMessagesPatientInfoToken = this.$t("error");
             }
@@ -430,6 +466,12 @@ export default {
         'concentration': item.concentration,
         'usage': item.usage,
         'amount': 0,
+        'doctorNote': {
+          morning: '',
+          noon: '',
+          afternoon: '',
+          night: ''
+        }
       });
     },
     checkAddDisabled(inpItem) {
@@ -460,21 +502,30 @@ export default {
     checkPatientPhone() {
       if (this.patientInfoToken.length > 0 && this.checkValidToken()) {
         this.isLoading += 1;
+        let vm = this;
         doctorService.getPatientInfoByToken(this.patientInfoToken, this.patientId)
             .then(response => {
               if (response.status === 200) {
                 console.log("OKKK", response);
-                this.patientInfo = response.data;
+                vm.patientInfo = response.data;
+                // vm.medicalInfoList = response.data.medical_infos;
+                vm.medicalInfoList = response.data.medical_infos.map(item => {
+                  let new_data = item;
+                  let {date, time} = vm.getFormatedDate(item.created_at);
+                  new_data['text'] = 'ID: ' + item.id + '\t/\tNgày tạo: ' + date + ' ' + time;
+                  return new_data;
+                });
+                if (vm.medicalInfoList.length > 0) vm.selectedMedicalInfo = vm.medicalInfoList[0];
               } else {
-                this.errorMessagesPatientInfoToken = this.$t("phoneNumberNotFound");
+                vm.errorMessagesPatientInfoToken = this.$t("phoneNumberNotFound");
               }
             })
             .catch(error => {
               console.log(error);
-              this.errorMessagesPatientInfoToken = this.$t("phoneNumberNotFound");
+              vm.errorMessagesPatientInfoToken = this.$t("phoneNumberNotFound");
             })
             .finally(() => {
-              this.isLoading -= 1;
+              vm.isLoading -= 1;
             });
       }
     },
@@ -492,13 +543,19 @@ export default {
       this.errorMessagesPatientInfoToken = '';
       if (this.$refs.form) this.$refs.form.reset();
     },
+    getFormatedDate(rawDate) {
+      let datetime = new Date(rawDate);
+      let date = datetime.toLocaleDateString()
+      let time = datetime.toLocaleTimeString()
+      return {date, time};
+    },
     confirmedDialog(value) {
       if (!this.checkValidToken()) return;
       const medicine_items = this.itemsTable.map(item => {
         const container = {
           'medicine': item.id,
           'amount': item.amount,
-          'doctor_note': item.doctor_note,
+          'doctor_note': `Sáng: ${item.doctorNote.morning}, Trưa: ${item.doctorNote.noon}, Chiều: ${item.doctorNote.afternoon}, Tối: ${item.doctorNote.night}`,
         };
         return container;
       })
@@ -507,6 +564,7 @@ export default {
         'diagnostic': this.diagnostic,
         'note': this.prescriptionNote,
         'medicine_items': medicine_items,
+        'medical_info': this.selectedMedicalInfo.id,
       }
       let vm = this;
       this.isLoading += 1;

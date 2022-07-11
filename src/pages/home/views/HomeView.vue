@@ -1,333 +1,260 @@
 <template>
-  <div class="wrapper">
-    <parallax class="section page-header header-filter" :style="headerStyle">
-      <div class="container">
-        <div class="md-layout">
-          <div
-              class="md-layout-item md-size-50 md-small-size-70 md-xsmall-size-100"
-          >
-            <h1 class="title">Your Story Starts With Us.</h1>
-            <h4>
-              Every landing page needs a small description after the big bold
-              title, that's why we added this text here. Add here all the
-              information that can make you or your product create the first
-              impression.
-            </h4>
-            <br />
-            <md-button
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                class="md-success md-lg"
-                target="_blank"
-            ><i class="fas fa-play"></i> Watch video</md-button
-            >
-          </div>
-        </div>
-      </div>
-    </parallax>
-    <div class="main main-raised">
-      <div class="section">
-        <div class="container">
-          <div class="md-layout">
-            <div
-                class="md-layout-item md-size-66 md-xsmall-size-100 mx-auto text-center"
-            >
-              <h2 class="title text-center">Let's talk product</h2>
-              <h5 class="description">
-                This is the paragraph where you can write more details about
-                your product. Keep you user engaged by providing meaningful
-                information. Remember that by this time, the user is curious,
-                otherwise he wouldn't scroll to get here. Add a button if you
-                want the user to see more.
-              </h5>
+  <div class="home-view__container">
+    <section>
+      <v-parallax class="parallax" height="800">
+        <v-layout column align-center justify-center class="white--text">
+          <v-row align="center" justify="center">
+            <v-col class="p-2" cols="4">
+              <img height="700" src="~@/assets/images/screenshot2.png" />
+            </v-col>
+            <v-col cols="1"></v-col>
+            <v-col cols="7">
+              <h1 class="mb-2 white--text display-1 text-xs-center custom-bg-title">
+                Hệ thống đơn thuốc điện tử áp dụng mã QR
+              </h1>
+              <div class="white--text subheading mb-3 text-xs-center"
+                   style="font-weight: 900; text-shadow: 2px 2px #000000">Có mặt trên ứng dụng android
+              </div>
+              <v-btn class="blue lighten-2 mt-5" dark large href="https://bom.so/qrcodeeprescription">
+                {{ $t('download') }}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-layout>
+      </v-parallax>
+    </section>
+
+    <section>
+      <v-layout
+          column
+          wrap
+          class="my-5"
+          align-center
+      >
+        <v-flex xs12 sm4 class="my-3">
+          <div class="text-xs-center align-center">
+            <h2 class="headline text-center">
+              Một giải pháp thông minh cho việc khám chữa bệnh
+            </h2>
+            <div class="subheading text-center align-center text-xs-center">
+              Áp dụng công nghệ mã QR
             </div>
           </div>
-          <div class="features text-center">
-            <div class="md-layout">
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="info">
-                  <div class="icon icon-info">
-                    <md-icon>chat</md-icon>
-                  </div>
-                  <h4 class="info-title">Free Chat</h4>
-                  <p>
-                    Divide details about your product or agency work into parts.
-                    Write a few lines about each one. A paragraph describing a
-                    feature will be enough.
-                  </p>
-                </div>
-              </div>
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="info">
-                  <div class="icon icon-success">
-                    <md-icon>verified_user</md-icon>
-                  </div>
-                  <h4 class="info-title">Verified Users</h4>
-                  <p>
-                    Divide details about your product or agency work into parts.
-                    Write a few lines about each one. A paragraph describing a
-                    feature will be enough.
-                  </p>
-                </div>
-              </div>
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="info">
-                  <div class="icon icon-danger">
-                    <md-icon>fingerprint</md-icon>
-                  </div>
-                  <h4 class="info-title">Fingerprint</h4>
-                  <p>
-                    Divide details about your product or agency work into parts.
-                    Write a few lines about each one. A paragraph describing a
-                    feature will be enough.
-                  </p>
-                </div>
-              </div>
-            </div>
+        </v-flex>
+        <v-flex xs12>
+          <v-container grid-list-xl>
+            <v-layout row wrap align-center>
+              <v-flex xs12 md4>
+                <v-card class="elevation-0 transparent">
+                  <v-card-text class="layout justify-center">
+                    <v-icon x-large class="blue--text text--lighten-2 align-center">mdi-qrcode-scan</v-icon>
+                  </v-card-text>
+                  <v-card-title primary-title class="layout justify-center">
+                    <div class="headline text-xs-center">Công nghệ mã QR</div>
+                  </v-card-title>
+                  <v-card-text>
+                    QR là từ viết tắt của Quick Response (tạm dịch “Mã phản hồi nhanh”). Đây là một ma trận mã vạch có
+                    thể được đọc bởi máy đọc mã vạch hay smartphone (điện thoại thông minh)
+                    có chức năng chụp ảnh với ứng dụng chuyên biệt để quét mã vạch.
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+              <v-flex xs12 md4>
+                <v-card class="elevation-0 transparent">
+                  <v-card-text class="layout justify-center">
+                    <v-icon x-large class="blue--text text--lighten-2">mdi-clock-fast</v-icon>
+                  </v-card-text>
+                  <v-card-title primary-title class="layout justify-center">
+                    <div class="headline">Nhanh chóng & tiện lợi</div>
+                  </v-card-title>
+                  <v-card-text>
+                    Mã QR cho phép lượng thông tin truyền tải sẽ nhiều hơn, hỗ trợ tốt hơn cho người dùng, đặc biệt
+                    là những doanh nghiệp kinh doanh muốn gửi thông điệp đến khách hàng của mình.
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+              <v-flex xs12 md4>
+                <v-card class="elevation-0 transparent">
+                  <v-card-text class="layout justify-center">
+                    <v-icon x-large class="blue--text text--lighten-2">mdi-lock</v-icon>
+                  </v-card-text>
+                  <v-card-title primary-title class="layout justify-center">
+                    <div class="headline text-xs-center">An toàn & bảo mật</div>
+                  </v-card-title>
+                  <v-card-text>
+                    An toàn thông tin ngày nay được coi là vấn đề đáng lưu tâm hàng đầu của
+                    xã hội. Nó là một vấn đề ảnh hưởng đến các ngành kinh tế, khoa học – kỹ thuật và xã hội.
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-flex>
+      </v-layout>
+    </section>
+
+    <section>
+      <v-parallax height="380">
+        <v-layout column align-center justify-center>
+          <div class="headline white--text mb-3 text-xs-center">
+            Hạnh phúc là khi bạn có một sức khỏe tốt.
           </div>
-        </div>
-      </div>
-      <div class="section text-center">
-        <div class="container">
-          <h2 class="title">Here is our team</h2>
-          <div class="team">
-            <div class="md-layout">
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="team-player">
-                  <md-card class="md-card-plain">
-                    <div class="md-layout-item md-size-50 mx-auto">
-                      <img
-                          :src="teamImg1"
-                          alt="Thumbnail Image"
-                          class="img-raised rounded-circle img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">
-                      Gigi Hadid
-                      <br />
-                      <small class="card-description text-muted">Model</small>
-                    </h4>
+          <em>Hãy bảo vệ sức khỏe của bạn và thăm khám định kì thường xuyên.</em>
+          <v-btn class="blue lighten-2 mt-5" dark large href="/pre-made-themes">
+            Thông tin thêm
+          </v-btn>
+        </v-layout>
+      </v-parallax>
+    </section>
 
-                    <md-card-content>
-                      <p class="card-description">
-                        You can write here details about one of your team
-                        members. You can give more details about what they do.
-                        Feel free to add some <a href="#">links</a> for people
-                        to be able to follow them outside the site.
-                      </p>
-                    </md-card-content>
+    <section>
+      <v-container grid-list-md>
 
-                    <md-card-actions class="text-center">
-                      <md-button
-                          href="javascript:void(0)"
-                          class="md-just-icon md-simple"
-                      >
-                        <i class="fab fa-twitter"></i>
-                      </md-button>
-                      <md-button
-                          href="javascript:void(0)"
-                          class="md-just-icon md-simple"
-                      >
-                        <i class="fab fa-instagram"></i>
-                      </md-button>
-                      <md-button
-                          href="javascript:void(0)"
-                          class="md-just-icon md-simple"
-                      >
-                        <i class="fab fa-facebook-square"></i>
-                      </md-button>
-                    </md-card-actions>
-                  </md-card>
-                </div>
-              </div>
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="team-player">
-                  <md-card class="md-card-plain">
-                    <div class="md-layout-item md-size-50 mx-auto">
-                      <img
-                          :src="teamImg2"
-                          alt="Thumbnail Image"
-                          class="img-raised rounded-circle img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">
-                      Carla Hortensia
-                      <br />
-                      <small class="card-description text-muted"
-                      >Designer</small
-                      >
-                    </h4>
 
-                    <md-card-content>
-                      <p class="card-description">
-                        You can write here details about one of your team
-                        members. You can give more details about what they do.
-                        Feel free to add some <a href="#">links</a> for people
-                        to be able to follow them outside the site.
-                      </p>
-                    </md-card-content>
-
-                    <md-card-actions class="text-center">
-                      <md-button
-                          href="javascript:void(0)"
-                          class="md-just-icon md-simple"
-                      >
-                        <i class="fab fa-twitter"></i>
-                      </md-button>
-                      <md-button
-                          href="javascript:void(0)"
-                          class="md-just-icon md-simple"
-                      >
-                        <i class="fab fa-linkedin"></i>
-                      </md-button>
-                    </md-card-actions>
-                  </md-card>
-                </div>
-              </div>
-              <div class="md-layout-item md-medium-size-33 md-small-size-100">
-                <div class="team-player">
-                  <md-card class="md-card-plain">
-                    <div class="md-layout-item md-size-50 mx-auto">
-                      <img
-                          :src="teamImg3"
-                          alt="Thumbnail Image"
-                          class="img-raised rounded-circle img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">
-                      Kendall Jenner
-                      <br />
-                      <small class="card-description text-muted">Model</small>
-                    </h4>
-
-                    <md-card-content>
-                      <p class="card-description">
-                        You can write here details about one of your team
-                        members. You can give more details about what they do.
-                        Feel free to add some <a href="#">links</a> for people
-                        to be able to follow them outside the site.
-                      </p>
-                    </md-card-content>
-
-                    <md-card-actions class="text-center">
-                      <md-button
-                          href="javascript:void(0)"
-                          class="md-just-icon md-simple"
-                      >
-                        <i class="fab fa-twitter"></i>
-                      </md-button>
-                      <md-button
-                          href="javascript:void(0)"
-                          class="md-just-icon md-simple"
-                      >
-                        <i class="fab fa-instagram"></i>
-                      </md-button>
-                      <md-button
-                          href="javascript:void(0)"
-                          class="md-just-icon md-simple"
-                      >
-                        <i class="fab fa-facebook-square"></i>
-                      </md-button>
-                    </md-card-actions>
-                  </md-card>
-                </div>
-              </div>
+        <v-layout row wrap>
+          <v-flex xs12 text-xs-center class="mt-5">
+            <div class="headline text-center">Hãy tham gia hệ thống của chúng tôi</div>
+            <br>
+            <div class="text-center">Các bệnh viện, hiệu thuốc muốn tham gia xin vui lòng điền thông tin bên dưới
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="section section-contacts">
-        <div class="container">
-          <div class="md-layout">
-            <div class="md-layout-item md-size-66 md-xsmall-size-100 mx-auto">
-              <h2 class="text-center title">Work with us</h2>
-              <h4 class="text-center description">
-                Divide details about your product or agency work into parts.
-                Write a few lines about each one and contact us about any
-                further collaboration. We will responde get back to you in a
-                couple of hours.
-              </h4>
-              <form class="contact-form">
-                <div class="md-layout">
-                  <div class="md-layout-item md-size-50">
-                    <md-field>
-                      <label>Your Name</label>
-                      <md-input v-model="name" type="text"></md-input>
-                    </md-field>
-                  </div>
-                  <div class="md-layout-item md-size-50">
-                    <md-field>
-                      <label>Your Email</label>
-                      <md-input v-model="email" type="email"></md-input>
-                    </md-field>
-                  </div>
+          </v-flex>
+          <v-flex xs8 offset-xs2>
+
+            <v-card class="elevation-0 transparent">
+
+              <v-card-text>
+                <v-flex xs12>
+                  <v-text-field filled label="Email address" :rules="emailRules" v-model="email"
+                                persistent-hint></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field filled multi-line label="Số điện thoại"></v-text-field>
+                </v-flex>
+                <div xs12 class="text-xs-center d-flex justify-center">
+                  <v-btn class="blue lighten-2 mb-5" dark large @click="subscribe">Đăng ký</v-btn>
                 </div>
-                <md-field maxlength="5">
-                  <label>Your Message</label>
-                  <md-textarea v-model="message"></md-textarea>
-                </md-field>
-                <div class="md-layout">
-                  <div class="md-layout-item md-size-33 mx-auto text-center">
-                    <md-button class="md-success">Send Message</md-button>
-                  </div>
-                </div>
-              </form>
-            </div>
+              </v-card-text>
+
+            </v-card>
+
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </section>
+
+    <section>
+      <v-parallax height="380">
+        <v-layout column align-center justify-center>
+          <div class="headline white--text mb-3 text-xs-center">
+            Theo dõi và cập nhật thông tin của chúng tôi
           </div>
-        </div>
-      </div>
-    </div>
+        </v-layout>
+        <v-layout justify-space-around justify-center>
+
+          <v-icon x-large dark>mdi-facebook</v-icon>
+
+          <v-icon x-large dark>mdi-twitter</v-icon>
+
+          <v-icon x-large dark>mdi-reddit</v-icon>
+
+          <v-icon x-large dark>mdi-instagram</v-icon>
+
+          <v-icon x-large dark>mdi-discord</v-icon>
+        </v-layout>
+      </v-parallax>
+    </section>
+
+    <section>
+      <v-container grid-list-xl>
+        <v-row align="center" justify="center">
+          <v-col cols="12">
+            <h2 class="text-center headline">Đội ngũ phát triển</h2>
+          </v-col>
+          <v-col cols="3">
+            <team-member name="Huỳnh Tấn Ý" job="Nhà phát triển phần mềm" avatar="avatar_y.jpg"/>
+          </v-col>
+          <v-col cols="2"></v-col>
+          <v-col cols="3">
+            <team-member name="Ngô Hoàng Minh" job="Nhà phát triển phần mềm" avatar="avatar_minh.jpg"/>
+          </v-col>
+        </v-row>
+      </v-container>
+    </section>
   </div>
 </template>
 
 <script>
+import TeamMember from "@/pages/home/components/TeamMember";
 export default {
-  name: 'HomeView',
-  bodyClass: "landing-page",
-  props: {
-    header: {
-      type: String,
-      default: require("@/assets/img/bg7.jpg")
-    },
-    teamImg1: {
-      type: String,
-      default: require("@/assets/img/faces/avatar.jpg")
-    },
-    teamImg2: {
-      type: String,
-      default: require("@/assets/img/faces/christian.jpg")
-    },
-    teamImg3: {
-      type: String,
-      default: require("@/assets/img/faces/kendall.jpg")
-    }
-  },
-  data() {
+  name: "HomeView",
+  components: {TeamMember},
+  data: function () {
     return {
-      name: null,
-      email: null,
-      message: null
+      title: "Endorfine",
+      imageLink: {
+        main:
+            "https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fb13f0434-b228-11e6-8e5d-5252025056ab_web_scale_0.4666667_0.4666667__.jpg?alt=media&token=660df23e-599e-434b-9313-ba69c973eeea",
+        sub_main:
+            "@/assets/images/medical-hands-up.jpg",
+        logo:
+            "https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fandroid-chrome-512x512.png?alt=media&token=8a0a66f6-4741-4ff6-8f28-eb9ec74374df",
+        social_cover:
+            "https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fo-NIGHTCLUB-facebook.jpg?alt=media&token=cefc5c4c-9714-41da-9c22-f63caf5e89a4"
+      },
+      email: "",
+      emailRules: [
+        v => {
+          return !!v || "E-mail is required";
+        },
+        v =>
+            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+            "E-mail must be valid"
+      ],
+      subscribed: false
     };
   },
-  computed: {
-    headerStyle() {
-      return {
-        backgroundImage: `url(${this.header})`
-      };
+  methods: {
+    subscribe: function () {
+      this.subscribed = !this.subscribed;
     }
+  },
+
+  computed: {
+    // imgHeight: function() {
+    //   var offset = 320;
+    //   console.log("new image height is " + (this.pageHeight - offset));
+    //   return this.pageHeight - offset;
+    // }
+  },
+
+  mounted: function () {
+    // this.calculateHeight();
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.md-card-actions.text-center {
-  display: flex;
-  justify-content: center !important;
-}
-.contact-form {
-  margin-top: 30px;
-}
+.home-view__container {
 
-.md-has-textarea + .md-layout {
-  margin-top: 15px;
+  .finedTitle {
+    font-weight: 900;
+    text-shadow: 2px 2px #000000;
+  }
+
+  .social-icon {
+    font-size: 21px;
+    color: white;
+  }
+
+  .v-parallax {
+    background: transparent;
+    background-image: url('@/assets/images/medical-hands-up.jpg');
+    background-size: cover;
+  }
+
+  .custom-bg-title {
+    font-weight: 900;
+    text-shadow: 3px 2px #000000;
+  }
 }
 </style>

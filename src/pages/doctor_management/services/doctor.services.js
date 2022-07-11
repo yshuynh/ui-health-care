@@ -16,6 +16,7 @@ export const doctorService = {
     requestUploadAvatarFile,
     uploadAvatarToAWS,
     getPatientPrescriptionList,
+    getPatientMedicalInfoList,
     // resendEmail,
     // sendResetPasswordEmail
 };
@@ -168,6 +169,14 @@ function uploadAvatarToAWS(awsName, link, fieldData, file) {
         method: 'POST',
         url: link,
         data: formData,
+    })
+}
+
+function getPatientMedicalInfoList(patientId) {
+    return axios({
+        method: 'GET',
+        headers: Auth.getHeaderCookie(),
+        url: `${Constants.SERVER}/doctors/a/medical_infos?patient=${patientId}`
     })
 }
 

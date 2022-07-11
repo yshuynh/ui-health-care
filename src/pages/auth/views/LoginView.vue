@@ -16,7 +16,8 @@
               top
               color="teal lighten-2"
           ></v-progress-linear>
-          <v-card-title class="text-uppercase">Login</v-card-title>
+          <v-card-title class="text-uppercase">{{$t('login')}}
+          </v-card-title>
           <v-card-text>
             <v-form :lazy-validation="lazy" ref="form" v-model="valid" @submit.prevent="login" id="checkLogin">
               <v-text-field
@@ -33,12 +34,6 @@
                   :label="this.$t('password')"
                   v-model="password"
               ></v-text-field>
-
-              <router-link class="d-block grey--text my-5"
-                           :to="getRouterLinkForgotPassword"
-              >
-                {{ this.$t('forgotPassword') }}
-              </router-link>
 
               <v-alert
                   :value="isShowNotify"
@@ -59,6 +54,12 @@
                 {{ $t('signIn') }}
               </v-btn>
             </v-form>
+
+            <router-link class="d-block grey--text text-center mx-auto mt-1"
+                         :to="getRouterLinkRegister"
+            >
+              {{ this.$t('notHaveAccountRegister') }}
+            </router-link>
           </v-card-text>
         </v-card>
       </v-col>
@@ -120,8 +121,8 @@ export default {
   },
   components: {},
   computed: {
-    getRouterLinkForgotPassword: function () {
-      return constants.ROUTER_FORGOT_PASSWORD;
+    getRouterLinkRegister: function () {
+      return 'register'
     }
   },
 }
