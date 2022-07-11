@@ -4,11 +4,11 @@
       <v-parallax class="parallax" height="800">
         <v-layout column align-center justify-center class="white--text">
           <v-row align="center" justify="center">
-            <v-col class="p-2" cols="4">
+            <v-col class="p-2" cols="12" md="4" sm="12">
               <img height="700" src="~@/assets/images/screenshot2.png" />
             </v-col>
-            <v-col cols="1"></v-col>
-            <v-col cols="7">
+            <v-spacer/>
+            <v-col cols="12" md="7" sm="12">
               <h1 class="mb-2 white--text display-1 text-xs-center custom-bg-title">
                 Hệ thống đơn thuốc điện tử áp dụng mã QR
               </h1>
@@ -170,13 +170,17 @@
           <v-col cols="12">
             <h2 class="text-center headline">Đội ngũ phát triển</h2>
           </v-col>
-          <v-col cols="3">
+        </v-row>
+        <v-row align="center" justify="center">
+          <v-spacer/>
+          <v-col cols="12" md="3" sm="12">
             <team-member name="Huỳnh Tấn Ý" job="Nhà phát triển phần mềm" avatar="avatar_y.jpg"/>
           </v-col>
-          <v-col cols="2"></v-col>
-          <v-col cols="3">
+          <v-spacer/>
+          <v-col cols="12" md="3" sm="12">
             <team-member name="Ngô Hoàng Minh" job="Nhà phát triển phần mềm" avatar="avatar_minh.jpg"/>
           </v-col>
+          <v-spacer/>
         </v-row>
       </v-container>
     </section>
