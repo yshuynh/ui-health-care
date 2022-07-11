@@ -43,10 +43,10 @@
         </v-flex>
         <v-flex xs12>
           <v-container grid-list-xl>
-            <v-layout row wrap align-center>
+            <v-layout row wrap align-top>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-card-text class="layout justify-center">
+                  <v-card-text class="d-flex justify-center">
                     <v-icon x-large class="blue--text text--lighten-2 align-center">mdi-qrcode-scan</v-icon>
                   </v-card-text>
                   <v-card-title primary-title class="layout justify-center">
@@ -61,7 +61,7 @@
               </v-flex>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-card-text class="layout justify-center">
+                  <v-card-text class="d-flex justify-center">
                     <v-icon x-large class="blue--text text--lighten-2">mdi-clock-fast</v-icon>
                   </v-card-text>
                   <v-card-title primary-title class="layout justify-center">
@@ -75,7 +75,7 @@
               </v-flex>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-card-text class="layout justify-center">
+                  <v-card-text class="d-flex justify-center">
                     <v-icon x-large class="blue--text text--lighten-2">mdi-lock</v-icon>
                   </v-card-text>
                   <v-card-title primary-title class="layout justify-center">
