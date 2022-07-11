@@ -1,5 +1,11 @@
 <template>
   <v-container>
+    <image-picker :base-preview-image="drugstore.background" :value.sync="background" @confirmed="onConfirmedUploadAvatar"
+                  class="mb-4"
+                  width-per-cent="100%"
+                  :aspect-ratio="16/9"
+                  :title="this.$t('backgroundImage')"
+    />
     <drugstore-info :drugstore-info="$store.state.drugstore" @confirmedUpdateInfo="confirmedUpdateInfo"/>
 
 <!--    <v-card v-html="getGgMapIframe(drugstore.address)">-->
@@ -14,12 +20,14 @@
 import {drugstoreService} from "@/pages/drugstore_management/services/drugstore.services";
 import MySnackbar from "@/components/MySnackbar";
 import DrugstoreInfo from "@/components/DrugstoreInfo";
+import ImagePicker from "@/components/ImagePicker";
 // import {drugstoreService} from "@/pages/drugstore_management/services/drugstore.services";
 
 export default {
   name: 'DrugstoreInfoView',
   data() {
     return {
+      background: null,
       valid: false,
       alert: false,
       alertType: "error",
@@ -69,6 +77,36 @@ export default {
     updateShowConfirmDialog(value) {
       this.showConfirmDialog = value;
     },
+    onConfirmedUploadAvatar(file) {
+      console.log(file);
+      let vm = this;
+      this.isLoading += 1;
+      drugstoreService.requestUploadAvatarFile('background', file.name)
+          .then(response => {
+            console.log(response);
+            vm.isLoading += 1;
+            drugstoreService.uploadAvatarToAWS('background', response.data.url, response.data.fields, file)
+                .then(res => {
+                  console.log(res);
+                  vm.showSnackbarFunc(vm.$t('saveSuccess'), "success");
+                  // this.$router.go();
+                })
+                .catch(error => {
+                  console.log(error);
+                  vm.showSnackbarFunc(vm.$t('didError'), "error");
+                })
+                .finally(() => {
+                  vm.isLoading -= 1
+                });
+          })
+          .catch(error => {
+            console.log(error);
+            vm.showSnackbarFunc(vm.$t('didError'), "error");
+          })
+          .finally(() =>
+              vm.isLoading -= 1
+          );
+    },
     confirmedUpdateInfo(inputData) {
       console.log(this.drugstore);
       let data = {
@@ -101,7 +139,7 @@ export default {
     },
   },
 
-  components: {DrugstoreInfo, MySnackbar},
+  components: {ImagePicker, DrugstoreInfo, MySnackbar},
 
   computed: {
     isLoading: {

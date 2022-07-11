@@ -15,6 +15,8 @@ export const drugstoreService = {
     updatePharmacistInfo,
     createPharmacistAccount,
     activeUser,
+    requestUploadAvatarFile,
+    uploadAvatarToAWS
 };
 
 function getDrugstoreInfo() {
@@ -151,6 +153,33 @@ function createPharmacistAccount(data) {
         url: `${Constants.SERVER}/drugstores/a/pharmacists`,
         data: data
     });
+}
+
+function requestUploadAvatarFile(awsName, fileName) {
+    let queryParams = new URLSearchParams();
+    const [, extension] = fileName.split('.');
+    queryParams.append('ext', extension);
+    queryParams.append('name', awsName);
+    return axios({
+        method: 'POST',
+        url: `${Constants.SERVER}/files/a/avatar?${queryParams.toString()}`,
+        headers: Auth.getHeaderCookie(),
+    })
+}
+
+function uploadAvatarToAWS(awsName, link, fieldData, file) {
+    let formData = new FormData();
+    Object.keys(fieldData).forEach((key) => {
+        formData.append(key, fieldData[key]);
+    });
+    let new_file = new File([file], awsName);
+    console.log(new_file);
+    formData.append('file', new_file);
+    return axios({
+        method: 'POST',
+        url: link,
+        data: formData,
+    })
 }
 
 // function resendEmail() {
