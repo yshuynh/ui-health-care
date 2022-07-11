@@ -20,22 +20,12 @@
 
 <script>
 
-import {mapActions} from "vuex";
-
 export default {
   name: 'AppBar',
 
   data: () => ({
     //
   }),
-  methods: {
-    ...mapActions([
-      'toggleIsShowNav' // map `this.add()` to `this.$store.dispatch('increment')`
-    ]),
-    handleShowNav() {
-      this.toggleIsShowNav();
-    }
-  }
 };
 </script>
 

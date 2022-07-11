@@ -1,11 +1,11 @@
 <template>
   <div class="home-view__container">
     <section>
-      <v-parallax class="parallax" height="800">
+      <v-parallax class="parallax" :height="parallaxHeight">
         <v-layout column align-center justify-center class="white--text">
           <v-row align="center" justify="center">
-            <v-col class="p-2" cols="12" md="4" sm="12">
-              <img height="700" src="~@/assets/images/screenshot2.png" />
+            <v-col class="p-2 d-flex justify-content-center justify-center" cols="12" md="4" sm="12">
+              <img :height="imageParallaxHeight" src="~@/assets/images/screenshot2.png" />
             </v-col>
             <v-spacer/>
             <v-col cols="12" md="7" sm="12">
@@ -194,6 +194,8 @@ export default {
   components: {TeamMember},
   data: function () {
     return {
+      imageParallaxHeight: 700,
+      parallaxHeight: 800,
       title: "Endorfine",
       imageLink: {
         main:
@@ -233,7 +235,19 @@ export default {
 
   mounted: function () {
     // this.calculateHeight();
-  }
+  },
+
+  watch: {
+    '$store.state.screen': function(value) {
+      if (value === 'mobile') {
+        // this.parallaxHeight = 1000;
+        this.imageParallaxHeight = 500;
+      } else {
+        // this.parallaxHeight = 800;
+        this.imageParallaxHeight = 700;
+      }
+    }
+  },
 };
 </script>
 
