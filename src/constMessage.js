@@ -136,6 +136,7 @@ const Messages = lang === "en" ? {
     'hadAccountLogin': 'Đã có tài khoản? Đăng nhập',
     'notHaveAccountRegister': 'Chưa có tài khoản? Đăng ký',
     'download': 'Tải xuống',
+    'requiredOneOfList': 'Vui lòng điền một trong các ô này',
 
 }
 

@@ -15,6 +15,8 @@ export const pharmacistService = {
     createMedicalInfo,
     updatePrescription,
     getPrescriptionByToken,
+    requestUploadAvatarFile,
+    uploadAvatarToAWS
     // resendEmail,
     // sendResetPasswordEmail
 };
@@ -150,22 +152,30 @@ function getPrescriptionByToken(prescription_id, token, data) {
         timeout: 5000,
     });
 }
-// function resendEmail() {
-//     return axios({
-//         method: 'POST',
-//         headers: Auth.getHeader(),
-//         url: `${Constants.SERVER}/users/confirm`
-//     })
-// }
-//
-// function sendResetPasswordEmail(username, email) {
-//     const data = new URLSearchParams();
-//     data.append('username', username);
-//     data.append('email', email);
-//
-//     return axios({
-//         method: 'POST',
-//         url: `${Constants.SERVER}/user/send-email-password`,
-//         data: data
-//     });
-// }
+
+function requestUploadAvatarFile(awsName, fileName) {
+    let queryParams = new URLSearchParams();
+    const [, extension] = fileName.split('.');
+    queryParams.append('ext', extension);
+    queryParams.append('name', awsName);
+    return axios({
+        method: 'POST',
+        url: `${Constants.SERVER}/files/a/avatar?${queryParams.toString()}`,
+        headers: Auth.getHeaderCookie(),
+    })
+}
+
+function uploadAvatarToAWS(awsName, link, fieldData, file) {
+    let formData = new FormData();
+    Object.keys(fieldData).forEach((key) => {
+        formData.append(key, fieldData[key]);
+    });
+    let new_file = new File([file], awsName);
+    console.log(new_file);
+    formData.append('file', new_file);
+    return axios({
+        method: 'POST',
+        url: link,
+        data: formData,
+    })
+}

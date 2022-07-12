@@ -89,7 +89,7 @@ export default {
                 .then(res => {
                   console.log(res);
                   vm.showSnackbarFunc(vm.$t('saveSuccess'), "success");
-                  // this.$router.go();
+                  this.$router.go();
                 })
                 .catch(error => {
                   console.log(error);

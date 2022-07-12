@@ -13,7 +13,7 @@
     >
       <v-list-item class="px-2">
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          <v-img :src="$store.state.pharmacist.avatar"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-title>{{$store.state.pharmacist.name}}</v-list-item-title>

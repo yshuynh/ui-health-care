@@ -182,7 +182,6 @@
               <v-row class="my-2" :key="item.id">
                 <v-col cols="12" md="6" sm="12" class="py-0">
                   <v-textarea v-model="item.doctorNote.morning"
-                              :rules="rules.required"
                               auto-grow
                               label="Sáng"
                               rows="1">
@@ -190,7 +189,6 @@
                 </v-col>
                 <v-col cols="12" md="6" sm="12" class="py-0">
                   <v-textarea v-model="item.doctorNote.noon"
-                              :rules="rules.required"
                               auto-grow
                               label="Trưa"
                               rows="1">
@@ -198,7 +196,6 @@
                 </v-col>
                 <v-col cols="12" md="6" sm="12" class="py-0">
                   <v-textarea v-model="item.doctorNote.afternoon"
-                              :rules="rules.required"
                               auto-grow
                               label="Chiều"
                               rows="1">
@@ -206,7 +203,6 @@
                 </v-col>
                 <v-col cols="12" md="6" sm="12" class="py-0">
                   <v-textarea v-model="item.doctorNote.night"
-                              :rules="rules.required"
                               auto-grow
                               label="Tối"
                               rows="1">
@@ -552,17 +548,22 @@ export default {
     confirmedDialog(value) {
       if (!this.checkValidToken()) return;
       const medicine_items = this.itemsTable.map(item => {
+        let doctorNote = "";
+        if (item.doctorNote.morning.length > 0) doctorNote += `Sáng: ${item.doctorNote.morning}\n`;
+        if (item.doctorNote.noon.length > 0) doctorNote += `Trưa: ${item.doctorNote.noon}\n`;
+        if (item.doctorNote.afternoon.length > 0) doctorNote += `Chiều: ${item.doctorNote.afternoon}\n`;
+        if (item.doctorNote.night.length > 0) doctorNote += `Tối: ${item.doctorNote.night}\n`;
         const container = {
           'medicine': item.id,
           'amount': item.amount,
-          'doctor_note': `Sáng: ${item.doctorNote.morning}, Trưa: ${item.doctorNote.noon}, Chiều: ${item.doctorNote.afternoon}, Tối: ${item.doctorNote.night}`,
+          'doctor_note': doctorNote,
         };
         return container;
       })
       let data = {
         'patient_info_token': this.patientInfoToken,
         'diagnostic': this.diagnostic,
-        'note': this.prescriptionNote,
+        'doctor_note': this.prescriptionNote,
         'medicine_items': medicine_items,
         'medical_info': this.selectedMedicalInfo.id,
       }

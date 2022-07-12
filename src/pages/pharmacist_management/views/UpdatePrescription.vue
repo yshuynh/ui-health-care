@@ -137,19 +137,23 @@
                           auto-grow
                           rows="1"
               ></v-textarea>
+              <v-textarea class="mx-4" :label="$t('doctorNote')" v-model="prescriptionData.doctor_note"
+                          :disabled="true"
+                          auto-grow
+                          rows="1"
+              ></v-textarea>
+              <v-textarea class="mx-4" :label="$t('pharmacistNote')" v-model="prescriptionData.pharmacist_note"
+                          :rules="rules.required"
+                          required
+                          auto-grow
+                          rows="1"
+              ></v-textarea>
             </template>
             <template v-slot:[`item.doctor_note`]="{ item }">
               <v-textarea v-model="item.doctor_note"
                           :disabled="true"
                           rows="1"
                           auto-grow>
-              </v-textarea>
-            </template>
-            <template v-slot:[`item.pharmacist_note`]="{ item }">
-              <v-textarea v-model="item.pharmacist_note"
-                          :rules="rules.required"
-                          auto-grow
-                          rows="1">
               </v-textarea>
             </template>
             <template v-slot:no-data>
@@ -226,7 +230,7 @@ export default {
         {text: this.$t('usage'), value: 'medicine.usage'},
         {text: this.$t('amount'), value: 'amount', width: '10%', align: 'center'},
         {text: this.$t('doctorNote'), value: 'doctor_note', width: '40%'},
-        {text: this.$t('pharmacistNote'), value: 'pharmacist_note', width: '40%'},
+        // {text: this.$t('pharmacistNote'), value: 'pharmacist_note', width: '40%'},
       ],
       itemsTable: [],
       searchMedicine: "",
@@ -398,16 +402,17 @@ export default {
         this.errorMessagesPrescriptionToken = this.$t('tokenExpired');
         return;
       }
-      const medicine_items = this.itemsTable.map(item => {
-        const container = {
-          'id': item.id,
-          'pharmacist_note': item.pharmacist_note,
-        };
-        return container;
-      });
+      // const medicine_items = this.itemsTable.map(item => {
+      //   const container = {
+      //     'id': item.id,
+      //     'pharmacist_note': item.pharmacist_note,
+      //   };
+      //   return container;
+      // });
       let data = {
         'prescription_token': this.prescriptionToken,
-        'medicine_items': medicine_items,
+        'pharmacist_note': this.prescriptionData.pharmacist_note,
+        // 'medicine_items': medicine_items,
       }
       console.log("pharamcist update prescription: ", data);
       let vm = this;

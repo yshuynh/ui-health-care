@@ -37,7 +37,11 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="12" sm="12" class="py-0">
-              <v-text-field :label="this.$t('prescriptionNote')" :value="prescriptionData.note" disabled
+              <v-text-field :label="this.$t('doctorNote')" :value="prescriptionData.doctor_note" disabled
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="12" sm="12" class="py-0">
+              <v-text-field :label="this.$t('pharmacistNote')" :value="prescriptionData.pharmacist_note" disabled
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="12" sm="12" class="py-0">
@@ -54,13 +58,6 @@
                 </template>
                 <template v-slot:[`item.doctor_note`]="{ item }">
                   <v-textarea  v-model="item.doctor_note" :disabled="true"
-                              :auto-grow="true"
-                              rows="1"
-                  >
-                  </v-textarea>
-                </template>
-                <template v-slot:[`item.pharmacist_note`]="{ item }">
-                  <v-textarea v-model="item.pharmacist_note" :disabled="true"
                               :auto-grow="true"
                               rows="1"
                   >
@@ -128,7 +125,6 @@ export default {
         {text: this.$t('usage'), value: 'medicine.usage'},
         {text: this.$t('amount'), value: 'amount', width: '10%'},
         {text: this.$t('doctorNote'), value: 'doctor_note'},
-        {text: this.$t('pharmacistNote'), value: 'pharmacist_note'}
       ],
     }
   },
